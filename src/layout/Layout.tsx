@@ -1,15 +1,11 @@
-import { Fragment } from 'react';
-
-import MainNavigation from './MainNavigation';
-import Navigation from './Navigation';
+import Navigation from "./Navigation";
 
 const Layout = (props: any) => {
   return (
-    <Fragment>
-      {/* <MainNavigation /> */}
+    <div>
       <Navigation />
       <main>{props.children}</main>
-    </Fragment>
+    </div>
   );
 };
 
