@@ -2,6 +2,9 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ShoppingCartIcon } from "@heroicons/react/outline";
 import BuyInput from "./BuyInput";
+import axios from "axios";
+import { useMutation } from "react-query";
+import createOrder from "../../../services/OrderService";
 
 type BuyCoinsModalProps = {
   coinSymbol: string;
@@ -22,6 +25,8 @@ const BuyCoinsModal = ({
   const [amount, setAmount] = useState<string | undefined>(undefined);
   const [amountType, setAmountType] = useState<string>("usd");
 
+  const mutation = useMutation(() => createOrder(coinSymbol, getAmountToBuy()))
+
   const handleAmountChange = (amount: string | undefined, amountType: string) => {
     setAmount(amount)
     setAmountType(amountType)
@@ -35,6 +40,17 @@ const BuyCoinsModal = ({
     } else {
       return ""
     }
+  }
+
+  const getAmountToBuy = (): number => {
+    if (amount) {
+      if (amountType === "usd") {      
+        return parseInt(amount as string)/coinPrice
+      } else if (amountType === "coin") {
+        return parseInt(amount)
+      }
+    }
+    return 0; 
   }
 
   return (
@@ -99,7 +115,7 @@ const BuyCoinsModal = ({
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => closeModal()}
+                    onClick={() => mutation.mutate()}
                   >
                     Buy
                   </button>
