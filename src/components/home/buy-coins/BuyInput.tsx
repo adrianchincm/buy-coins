@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type BuyInputProps = {
-  coinSymbol: string;
-  coinPrice: number;
+  coinSymbol: string;  
   coinImage: string;
+  handleAmountChange: (amount: string | undefined, amountType: string) => void
 };
 
-const BuyInput = ({ coinSymbol, coinPrice, coinImage }: BuyInputProps) => {
+const BuyInput = ({ coinSymbol, coinImage, handleAmountChange }: BuyInputProps) => {
   const [amount, setAmount] = useState<string | undefined>(undefined);
   const [amountType, setAmountType] = useState<string>("usd");
+
+  useEffect(() => {
+    handleAmountChange(amount, amountType)
+  }, [amount, amountType, handleAmountChange])
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setAmount((e.target as HTMLInputElement).value);
+  };
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setAmountType(e.target.value);
@@ -32,11 +40,11 @@ const BuyInput = ({ coinSymbol, coinPrice, coinImage }: BuyInputProps) => {
           )}
         </div>
         <input
-          type="text"
+          type="number"
           name="price"
           id="price"
           value={amount}
-          onInput={(e) => setAmount((e.target as HTMLInputElement).value)}
+          onInput={(e) => handleInputChange(e)}
           className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-16 sm:text-sm border-slate-600 rounded-md py-3 drop-shadow-sm bg-gray-100"
           placeholder={`1234.56`}
         />
