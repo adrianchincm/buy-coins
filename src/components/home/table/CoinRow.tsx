@@ -4,7 +4,7 @@ import { formatCurrency } from "@coingecko/cryptoformat";
 type CoinRowProps = {
   coin: CoinTable;
   open: boolean;
-  setOpen: (coinSymbol: string, coinPrice: number) => void;
+  setOpen: (coinSymbol: string, coinPrice: number, coinImage: string) => void;
 };
 
 const CoinRow = ({ coin, open, setOpen }: CoinRowProps) => {
@@ -49,7 +49,7 @@ const CoinRow = ({ coin, open, setOpen }: CoinRowProps) => {
         {coin.price_change_percentage_24h.toFixed(2)}
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button className="text-indigo-600 hover:text-indigo-900" onClick={() => setOpen(coin.symbol, coin.current_price)}>
+        <button className="text-indigo-600 hover:text-indigo-900" onClick={() => setOpen(coin.symbol, coin.current_price, coin.image)}>
           Buy
         </button>
       </td>

@@ -1,24 +1,35 @@
-import { Fragment, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ShoppingCartIcon } from '@heroicons/react/outline'
-import BuyInput from './BuyInput';
+import { Fragment, useRef, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { ShoppingCartIcon } from "@heroicons/react/outline";
+import BuyInput from "./BuyInput";
 
 type BuyCoinsModalProps = {
-    coinSymbol: string;
-    coinPrice: number;
-    open: boolean;
-    closeModal: () => void
-  };
+  coinSymbol: string;
+  coinPrice: number;
+  coinImage: string;
+  open: boolean;
+  closeModal: () => void;
+};
 
+const BuyCoinsModal = ({
+  coinSymbol,
+  coinPrice,
+  coinImage,
+  open,
+  closeModal,
+}: BuyCoinsModalProps) => {
+  //   const [open, setOpen] = useState(false)
 
-const BuyCoinsModal = ({ coinSymbol, coinPrice, open, closeModal }: BuyCoinsModalProps) => {
-//   const [open, setOpen] = useState(false)
-
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef(null);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={closeModal}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        initialFocus={cancelButtonRef}
+        onClose={closeModal}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -46,15 +57,25 @@ const BuyCoinsModal = ({ coinSymbol, coinPrice, open, closeModal }: BuyCoinsModa
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ShoppingCartIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                      <ShoppingCartIcon
+                        className="h-6 w-6 text-blue-600"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg leading-6 font-medium text-gray-900"
+                      >
                         Buy Order - {coinSymbol.toUpperCase()}
                       </Dialog.Title>
                       <div className="mt-2">
                         {/* input goes here */}
-                        <BuyInput />
+                        <BuyInput
+                          coinPrice={coinPrice}
+                          coinSymbol={coinSymbol}
+                          coinImage={coinImage}
+                        />
                       </div>
                     </div>
                   </div>
@@ -82,7 +103,7 @@ const BuyCoinsModal = ({ coinSymbol, coinPrice, open, closeModal }: BuyCoinsModa
         </div>
       </Dialog>
     </Transition.Root>
-  )
-}
+  );
+};
 
-export default BuyCoinsModal
+export default BuyCoinsModal;

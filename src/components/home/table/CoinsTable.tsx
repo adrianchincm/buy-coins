@@ -5,7 +5,7 @@ import TableHeader from "./TableHeader";
 type CoinsTableProps = {
   coins: CoinTable[];
   open: boolean;
-  setOpen: (coinSymbol: string, coinPrice: number) => void;
+  setOpen: (coinSymbol: string, coinPrice: number, coinImage: string) => void;
 };
 
 const CoinsTable = ({ coins, open, setOpen }: CoinsTableProps) => {
