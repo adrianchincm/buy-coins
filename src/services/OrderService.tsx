@@ -3,6 +3,7 @@ import { OrderResponse } from "../types/OrderType";
 const axios = require("axios").default;
 
 const createOrder = async (coinSymbol: string, coinPrice: number): Promise<OrderResponse | string> => {
+  // just a mock endpoint to simulate a POST request and handling its response
   try {
     const response = await axios.post(
       "https://jsonplaceholder.typicode.com/posts/", {

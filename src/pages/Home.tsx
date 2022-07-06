@@ -5,7 +5,7 @@ import CoinsTable from "../components/home/table/CoinsTable";
 import getCoins from "../services/CoinService";
 import { Coin, CoinTable } from "../types/CoinType";
 
-const Home = (props: any) => {
+const Home = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCoinSymbol, setSelectedCoinSymbol] = useState("");
   const [selectedCoinPrice, setSelectedCoinPrice] = useState(0);
