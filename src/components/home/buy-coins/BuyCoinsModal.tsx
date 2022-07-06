@@ -25,7 +25,11 @@ const BuyCoinsModal = ({
   const [amount, setAmount] = useState<string | undefined>(undefined);
   const [amountType, setAmountType] = useState<string>("usd");
 
-  const mutation = useMutation(() => createOrder(coinSymbol, getAmountToBuy()))
+  const mutation = useMutation(() => createOrder(coinSymbol, getAmountToBuy()), {
+    onSuccess: async (data) => {
+      console.log('its a success ' + JSON.stringify(data))
+    }
+  })
 
   const handleAmountChange = (amount: string | undefined, amountType: string) => {
     setAmount(amount)
@@ -45,9 +49,9 @@ const BuyCoinsModal = ({
   const getAmountToBuy = (): number => {
     if (amount) {
       if (amountType === "usd") {      
-        return parseInt(amount as string)/coinPrice
-      } else if (amountType === "coin") {
         return parseInt(amount)
+      } else if (amountType === "coin") {
+        return parseInt(amount) * coinPrice
       }
     }
     return 0; 

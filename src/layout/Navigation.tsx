@@ -3,17 +3,22 @@ import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import coins from "../assets/coins.png";
 import { NavLink } from "react-router-dom";
+import OrderContext from "../store/OrderContext";
+import { useContext } from "react";
+import { formatNumberToCurrency } from "../helpers/CurrencyHelper";
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Orders", href: "/orders" },
 ];
 
-function classNames(...classes: string[]) {
+const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navigation() {
+const Navigation = () => {
+  const orderCtx = useContext(OrderContext)
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -60,8 +65,8 @@ export default function Navigation() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div className="text-blue-500 text-base font-medium">
-                  $1,000,000
+                <div className="flex text-blue-500 text-base font-medium items-center">
+                  <div className="text-sm text-white mr-1">Current balance :</div> {formatNumberToCurrency(orderCtx.balance)}
                 </div>
               </div>
             </div>
@@ -92,3 +97,5 @@ export default function Navigation() {
     </Disclosure>
   );
 }
+
+export default Navigation

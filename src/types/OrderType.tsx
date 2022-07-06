@@ -1,7 +1,7 @@
 export interface OrderRequest {  
-  title: string;
-  body: string;
-  userId: number;
+  title: string; // coinSymbol
+  body: string; // amount in usd
+  userId: number; // random mock userId
 }
 
 export interface OrderResponse extends OrderRequest {
