@@ -2,7 +2,7 @@ import { OrderResponse } from "../types/OrderType";
 
 const axios = require("axios").default;
 
-const createOrder = async (coinSymbol: string, coinPrice: number): Promise<OrderResponse[] | string> => {
+const createOrder = async (coinSymbol: string, coinPrice: number): Promise<OrderResponse | string> => {
   try {
     const response = await axios.post(
       "https://jsonplaceholder.typicode.com/posts/", {

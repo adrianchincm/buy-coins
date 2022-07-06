@@ -14,10 +14,10 @@ const navigation = [
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
-}
+};
 
 const Navigation = () => {
-  const orderCtx = useContext(OrderContext)
+  const orderCtx = useContext(OrderContext);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -27,7 +27,7 @@ const Navigation = () => {
             <div className="relative flex items-center justify-between h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">                  
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   {open ? (
                     <XIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
@@ -41,7 +41,7 @@ const Navigation = () => {
                     className="block h-8 w-auto"
                     src={coins}
                     alt="BuyCoins"
-                  />                 
+                  />
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
@@ -54,19 +54,27 @@ const Navigation = () => {
                             navData.isActive
                               ? "bg-gray-900 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium"
+                            "px-3 py-2 rounded-md text-sm font-medium flex"
                           )
                         }
                       >
-                        {item.name}
+                        {item.name}{" "}
+                        {item.name === "Orders" && (
+                          <div className="ml-1 bg-teal-500 text-white rounded-full px-2">
+                            {orderCtx.orders.length}
+                          </div>
+                        )}
                       </NavLink>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div className="flex text-blue-500 text-base font-medium items-center">
-                  <div className="text-sm text-white mr-1">Current balance :</div> {formatNumberToCurrency(orderCtx.balance)}
+                <div className="lg:flex text-blue-500 text-base font-medium items-center">
+                  <div className="text-sm text-white mr-1">
+                    Current balance :
+                  </div>{" "}
+                  {formatNumberToCurrency(orderCtx.balance)}
                 </div>
               </div>
             </div>
@@ -83,11 +91,16 @@ const Navigation = () => {
                       navData.isActive
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      "block px-3 py-2 rounded-md text-base font-medium"
+                      "px-3 py-2 rounded-md text-base font-medium flex"
                     )
                   }
                 >
-                  {item.name}
+                  {item.name}{" "}
+                  {item.name === "Orders" && (
+                    <div className="ml-1 bg-teal-500 text-white rounded-full px-2">
+                      {orderCtx.orders.length}
+                    </div>
+                  )}
                 </NavLink>
               ))}
             </div>
@@ -96,6 +109,6 @@ const Navigation = () => {
       )}
     </Disclosure>
   );
-}
+};
 
-export default Navigation
+export default Navigation;

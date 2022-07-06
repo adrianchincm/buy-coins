@@ -1,10 +1,11 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ShoppingCartIcon } from "@heroicons/react/outline";
 import BuyInput from "./BuyInput";
-import axios from "axios";
 import { useMutation } from "react-query";
 import createOrder from "../../../services/OrderService";
+import OrderContext from "../../../store/OrderContext";
+import { OrderResponse } from "../../../types/OrderType";
 
 type BuyCoinsModalProps = {
   coinSymbol: string;
@@ -20,42 +21,60 @@ const BuyCoinsModal = ({
   coinImage,
   open,
   closeModal,
-}: BuyCoinsModalProps) => {  
+}: BuyCoinsModalProps) => {
+  const orderCtx = useContext(OrderContext);
   const cancelButtonRef = useRef(null);
   const [amount, setAmount] = useState<string | undefined>(undefined);
   const [amountType, setAmountType] = useState<string>("usd");
+  const [enableBuyButton, setEnableBuyButton] = useState<boolean>(true);
 
-  const mutation = useMutation(() => createOrder(coinSymbol, getAmountToBuy()), {
-    onSuccess: async (data) => {
-      console.log('its a success ' + JSON.stringify(data))
+  const mutation = useMutation(
+    () => createOrder(coinSymbol, getAmountToBuy()),
+    {
+      onSuccess: async (data) => {
+        orderCtx.addOrder(data as OrderResponse);
+        setEnableBuyButton(true);
+        closeModal();
+      },
     }
-  })
+  );
 
-  const handleAmountChange = (amount: string | undefined, amountType: string) => {
-    setAmount(amount)
-    setAmountType(amountType)
-  }
+  useEffect(() => {
+    amount === undefined || amount === ""
+      ? setEnableBuyButton(false)
+      : setEnableBuyButton(true);
+  }, [amount]);
+
+  const handleAmountChange = (
+    amount: string | undefined,
+    amountType: string
+  ) => {
+    setAmount(amount);
+    setAmountType(amountType);
+  };
 
   const showTotal = () => {
-    if (amountType === "usd" && amount) {      
-      return `${parseInt(amount as string)/coinPrice} ${coinSymbol.toUpperCase()}`
+    if (amountType === "usd" && amount) {
+      return `${
+        parseInt(amount as string) / coinPrice
+      } ${coinSymbol.toUpperCase()}`;
     } else if (amountType === "coin") {
-      return `USD $${(parseInt(amount as string) * coinPrice).toFixed(2)}`
+      return `USD $${(parseInt(amount as string) * coinPrice).toFixed(2)}`;
     } else {
-      return ""
+      return "";
     }
-  }
+  };
 
   const getAmountToBuy = (): number => {
     if (amount) {
-      if (amountType === "usd") {      
-        return parseInt(amount)
+      if (amountType === "usd") {
+        return parseInt(amount);
       } else if (amountType === "coin") {
-        return parseInt(amount) * coinPrice
+        return parseInt(amount) * coinPrice;
       }
     }
-    return 0; 
-  }
+    return 0;
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -104,8 +123,8 @@ const BuyCoinsModal = ({
                       >
                         Buy Order - {coinSymbol.toUpperCase()}
                       </Dialog.Title>
-                      <div className="mt-2">                        
-                        <BuyInput                          
+                      <div className="mt-2">
+                        <BuyInput
                           coinSymbol={coinSymbol}
                           coinImage={coinImage}
                           handleAmountChange={handleAmountChange}
@@ -113,15 +132,19 @@ const BuyCoinsModal = ({
                       </div>
                       <div className="mt-2 text-gray-500">{showTotal()}</div>
                     </div>
-                  </div>                  
-                </div>                
+                  </div>
+                </div>
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => mutation.mutate()}
+                    className="w-full disabled:bg-gray-500 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    disabled={!enableBuyButton}
+                    onClick={() => {
+                      setEnableBuyButton(false);
+                      mutation.mutate();
+                    }}
                   >
-                    Buy
+                    {mutation.isLoading ? "Buying..." : "Buy"}
                   </button>
                   <button
                     type="button"
