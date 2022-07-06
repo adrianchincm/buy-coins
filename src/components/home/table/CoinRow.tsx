@@ -3,11 +3,10 @@ import { formatCurrency } from "@coingecko/cryptoformat";
 
 type CoinRowProps = {
   coin: CoinTable;
-  open: boolean;
   setOpen: (coinSymbol: string, coinPrice: number, coinImage: string) => void;
 };
 
-const CoinRow = ({ coin, open, setOpen }: CoinRowProps) => {
+const CoinRow = ({ coin, setOpen }: CoinRowProps) => {
   return (
     <tr key={coin.id}>
       <td className="pl-6 py-4 text-sm text-gray-900 table-cell">
@@ -23,11 +22,9 @@ const CoinRow = ({ coin, open, setOpen }: CoinRowProps) => {
           {coin.name}
         </div>
         <dl className="font-normal lg:hidden">
-          <dt className="sr-only">Title</dt>s
           <dd className="mt-1 truncate text-gray-700">
             {formatCurrency(coin.current_price, "USD", "en")}
           </dd>
-          <dt className="sr-only sm:hidden">Email</dt>
           <dd className="mt-1 truncate text-gray-500 sm:hidden">
             Mcap {formatCurrency(coin.market_cap, "USD", "en")}
           </dd>
@@ -49,7 +46,10 @@ const CoinRow = ({ coin, open, setOpen }: CoinRowProps) => {
         {coin.price_change_percentage_24h.toFixed(2)}
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button className="text-indigo-600 hover:text-indigo-900" onClick={() => setOpen(coin.symbol, coin.current_price, coin.image)}>
+        <button
+          className="text-indigo-600 hover:text-indigo-900"
+          onClick={() => setOpen(coin.symbol, coin.current_price, coin.image)}
+        >
           Buy
         </button>
       </td>

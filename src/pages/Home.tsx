@@ -40,7 +40,7 @@ const Home = (props: any) => {
   } = useQuery("coins", () => getCoins());
 
   return (
-    <div className="my-8 ">
+    <div className="my-8">
       {!isError && !isLoading && (
         <CoinsTable
           coins={data as CoinTable[]}

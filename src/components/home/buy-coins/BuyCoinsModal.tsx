@@ -40,10 +40,10 @@ const BuyCoinsModal = ({
   );
 
   useEffect(() => {
-    amount === undefined || amount === ""
+    amount === undefined || amount === "" || orderCtx.balance < parseInt(amount)
       ? setEnableBuyButton(false)
       : setEnableBuyButton(true);
-  }, [amount]);
+  }, [amount, orderCtx.balance]);
 
   const handleAmountChange = (
     amount: string | undefined,
