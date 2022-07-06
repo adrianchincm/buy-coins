@@ -40,10 +40,20 @@ const BuyCoinsModal = ({
   );
 
   useEffect(() => {
-    amount === undefined || amount === "" || orderCtx.balance < parseInt(amount)
+    const checkBalanceIsInsufficient = () => {
+      if (amount) {
+        if (amountType === "usd") {          
+          return orderCtx.balance < parseInt(amount)
+        } else {
+          return orderCtx.balance < (parseInt(amount) * coinPrice)
+        }
+      }      
+    }  
+
+    amount === undefined || amount === "" || checkBalanceIsInsufficient()
       ? setEnableBuyButton(false)
       : setEnableBuyButton(true);
-  }, [amount, orderCtx.balance]);
+  }, [amount, orderCtx.balance, amountType, coinPrice]);
 
   const handleAmountChange = (
     amount: string | undefined,
@@ -54,17 +64,20 @@ const BuyCoinsModal = ({
   };
 
   const showTotal = () => {
-    if (amountType === "usd" && amount) {
-      return `${
-        parseInt(amount as string) / coinPrice
-      } ${coinSymbol.toUpperCase()}`;
-    } else if (amountType === "coin") {
-      return `USD $${(parseInt(amount as string) * coinPrice).toFixed(2)}`;
-    } else {
-      return "";
+    if (amount) {
+      if (amountType === "usd") {
+        return `${
+          parseInt(amount as string) / coinPrice
+        } ${coinSymbol.toUpperCase()}`;
+      } else if (amountType === "coin") {
+        return `USD $${(parseInt(amount as string) * coinPrice).toFixed(2)}`;
+      }
     }
+
+    return "";
   };
 
+  
   const getAmountToBuy = (): number => {
     if (amount) {
       if (amountType === "usd") {
