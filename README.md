@@ -18,6 +18,10 @@ Hooks such as useState, useEffect, useContext, useReducer
 
 Mobile friendly
 
+### Installation
 
+run `npm install`
+
+run `npm run start`
 
 
