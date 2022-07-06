@@ -28,7 +28,7 @@ const BuyInput = ({ coinSymbol, coinImage, handleAmountChange }: BuyInputProps) 
         htmlFor="price"
         className="block text-sm font-medium text-gray-700"
       >
-        Amount to buy
+        Amount to buy (only whole numbers, no decimals)
       </label>
       <div className="mt-1 relative rounded-md shadow-sm">
         <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none z-10">
